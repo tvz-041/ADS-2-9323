@@ -17,6 +17,9 @@ class FileSortWidget : public QWidget
 public:
     FileSortWidget(QWidget *parent = nullptr);
     ~FileSortWidget();
+    
+    void selectUnsortedFile();
+    void setSortedFilePath();
 
 public slots:
     void sort();
