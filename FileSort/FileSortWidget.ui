@@ -10,6 +10,9 @@
     <height>295</height>
    </rect>
   </property>
+  <property name="focusPolicy">
+   <enum>Qt::StrongFocus</enum>
+  </property>
   <property name="windowTitle">
    <string>Widget</string>
   </property>
@@ -112,6 +115,14 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>pushButton_sort</tabstop>
+  <tabstop>lineEdit_unsortedFile</tabstop>
+  <tabstop>lineEdit_sortedFile</tabstop>
+  <tabstop>spinBox_workFileCount</tabstop>
+  <tabstop>toolButton_unsortedFile</tabstop>
+  <tabstop>toolButton_sortedFile</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
