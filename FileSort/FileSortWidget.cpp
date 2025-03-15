@@ -51,6 +51,13 @@ void FileSortWidget::setSortedFilePath()
 
 void FileSortWidget::sort()
 {
+    QFile unsortedFile(ui->lineEdit_unsortedFile->text());
+    QFile sortedFile(ui->lineEdit_sortedFile->text());
+    if (unsortedFile.fileName() != sortedFile.fileName())
+    {
+        unsortedFile.remove();
+        sortedFile.copy(unsortedFile.fileName());
+    }
     ::sort(ui->lineEdit_sortedFile->text().toStdString(), &m_sender);
 }
 
@@ -65,5 +72,4 @@ void FileSortWidget::onSegmentMerged(int segmentLeft)
     ui->progressBar->setValue(ui->progressBar->maximum() - segmentLeft + ui->progressBar->minimum());
     QApplication::processEvents();
     setEnabled(ui->progressBar->value() == ui->progressBar->maximum());
-    ui->progressBar->setEnabled(true);
 }
