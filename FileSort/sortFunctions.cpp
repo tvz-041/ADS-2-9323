@@ -1,3 +1,5 @@
+#include <thread>
+
 #include "ProgressSender.h"
 
 #include "sortFunctions.h"
@@ -5,16 +7,13 @@
 void sort(const std::string &filename, ProgressSender* sender)
 {
     const int MergeCount = 3;
-    int segmentLeft = rand() % 1000 + 10;
+    int segmentLeft = 300;
     sender->setSegmentCount(segmentLeft);
 
     while (segmentLeft > 1)
     {
-        int max = 0;
-        for (int i = 0; i < 15000000; ++i)
-        {
-            max = (max + i) % 20;
-        }
+        // Искуственная задержка для имитации работы
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
         if (segmentLeft <= MergeCount)
             segmentLeft = 1;
