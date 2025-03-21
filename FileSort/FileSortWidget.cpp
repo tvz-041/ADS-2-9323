@@ -1,5 +1,7 @@
 #include <QDebug>
 #include <QFileDialog>
+#include <QMessageBox>
+#include <QThread>
 
 #include "FileSortWidget.h"
 #include "ui_FileSortWidget.h"
@@ -8,22 +10,29 @@
 FileSortWidget::FileSortWidget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Widget)
+    , m_thread(new QThread(this))
+    , m_sorter(new FileSorter())
 {
     ui->setupUi(this);
 
     connect(ui->pushButton_sort, &QPushButton::clicked, this, &FileSortWidget::sort);
 
-    connect(&m_sorter, &FileSorter::segmentCountChanged, this, &FileSortWidget::onSegmentCountChanged);
-    connect(&m_sorter, &FileSorter::segmentMerged, this, &FileSortWidget::onSegmentMerged);
-    connect(&m_sorter, &FileSorter::sortFinished, this, &FileSortWidget::onSortFinished);
+    connect(m_sorter, &FileSorter::segmentCountChanged, this, &FileSortWidget::onSegmentCountChanged);
+    connect(m_sorter, &FileSorter::segmentMerged, this, &FileSortWidget::onSegmentMerged);
+    connect(m_sorter, &FileSorter::sortFinished, this, &FileSortWidget::onSortFinished);
 
     connect(ui->toolButton_unsortedFile, &QToolButton::clicked, this, &FileSortWidget::selectUnsortedFile);
     connect(ui->toolButton_sortedFile, &QToolButton::clicked, this, &FileSortWidget::setSortedFilePath);
+    connect(this, &FileSortWidget::fileSortRequested, m_sorter, &FileSorter::sort);
+    m_sorter->moveToThread(m_thread);
+    m_thread->start();
 }
 
 FileSortWidget::~FileSortWidget()
 {
     delete ui;
+    m_thread->terminate();
+    m_sorter->deleteLater();
 }
 
 void FileSortWidget::selectUnsortedFile()
@@ -50,6 +59,7 @@ void FileSortWidget::setSortedFilePath()
 
 void FileSortWidget::sort()
 {
+    setEnabled(false);
     QFile unsortedFile(ui->lineEdit_unsortedFile->text());
     QFile sortedFile(ui->lineEdit_sortedFile->text());
     if (unsortedFile.fileName() != sortedFile.fileName())
@@ -57,7 +67,7 @@ void FileSortWidget::sort()
         unsortedFile.remove();
         sortedFile.copy(unsortedFile.fileName());
     }
-    m_sorter->sort(ui->lineEdit_sortedFile->text());
+    emit fileSortRequested(ui->lineEdit_sortedFile->text());
 }
 
 void FileSortWidget::onSegmentCountChanged(int count)
@@ -69,7 +79,6 @@ void FileSortWidget::onSegmentCountChanged(int count)
 void FileSortWidget::onSegmentMerged(int segmentLeft)
 {
     ui->progressBar->setValue(ui->progressBar->maximum() - segmentLeft + ui->progressBar->minimum());
-    QApplication::processEvents();
 }
 
 

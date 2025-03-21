@@ -24,11 +24,16 @@ public:
 public slots:
     void sort();
 
+signals:
+    void fileSortRequested(const QString& fileName);
+
 private slots:
     void onSegmentCountChanged(int count);
     void onSegmentMerged(int segmentLeft);
+    void onSortFinished(int returnCode);
 
 private:
     Ui::Widget *ui;
-    FileSorter m_sorter;
+    QThread *m_thread = nullptr;
+    FileSorter *m_sorter = nullptr;
 };
