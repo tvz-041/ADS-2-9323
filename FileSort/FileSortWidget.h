@@ -29,7 +29,7 @@ signals:
 
 private slots:
     void onSegmentCountChanged(int count);
-    void onSegmentMerged(int segmentLeft);
+    void onSegmentMerged(int mergeCount);
     void onSortFinished(int returnCode);
 
 private:

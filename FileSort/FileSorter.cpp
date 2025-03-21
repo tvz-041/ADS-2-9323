@@ -17,7 +17,7 @@ void FileSorter::setSegmentCount(int count)
     emit segmentCountChanged(count);
 }
 
-void FileSorter::onSegmentMerged(int segmentLeft)
+void FileSorter::onSegmentMerged(int mergeCount)
 {
-    emit segmentMerged(segmentLeft);
+    emit segmentMerged(mergeCount);
 }

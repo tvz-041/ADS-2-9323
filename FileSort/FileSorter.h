@@ -17,15 +17,20 @@ public:
 
     /**
      * @brief Сообщает GUI об уменьшении числа отрезков.
-     * @param segmentLeft количество оставшихся отрезков.
+     * @param mergeCount количество слитых отрезков.
+     *
+     * @note при естественном слиянии суммарное число слитых отрезков может оказаться меньше,
+     * чем исходное из-за слияния соседних отрезков в выходном файле.
+     * Для корректного установления прогресс-бара на 100% в конце сортировки
+     * вызовите данный метод с параметром "-1".
      */
-    void onSegmentMerged(int segmentLeft);
+    void onSegmentMerged(int mergeCount);
 
 public slots:
     void sort(const QString &filename);
 
 signals:
     void segmentCountChanged(int count);
-    void segmentMerged(int segmentLeft);
+    void segmentMerged(int mergeCount);
     void sortFinished(int reason);
 };

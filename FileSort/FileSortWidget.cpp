@@ -15,16 +15,29 @@ FileSortWidget::FileSortWidget(QWidget *parent)
 {
     ui->setupUi(this);
 
+    connect(ui->toolButton_unsortedFile, &QToolButton::clicked, this, &FileSortWidget::selectUnsortedFile);
+    connect(ui->toolButton_sortedFile, &QToolButton::clicked, this, &FileSortWidget::setSortedFilePath);
+
     connect(ui->pushButton_sort, &QPushButton::clicked, this, &FileSortWidget::sort);
 
     connect(m_sorter, &FileSorter::segmentCountChanged, this, &FileSortWidget::onSegmentCountChanged);
     connect(m_sorter, &FileSorter::segmentMerged, this, &FileSortWidget::onSegmentMerged);
-    connect(m_sorter, &FileSorter::sortFinished, this, &FileSortWidget::onSortFinished);
 
-    connect(ui->toolButton_unsortedFile, &QToolButton::clicked, this, &FileSortWidget::selectUnsortedFile);
-    connect(ui->toolButton_sortedFile, &QToolButton::clicked, this, &FileSortWidget::setSortedFilePath);
+    /**
+     * В нашей реализации поток активен всё время работы программы.
+     * Если же нужно активировать поток только на время выполнения задачи
+     * (и автоматически закрыть по завершении), используйте следующий вариант реализации:
+     *
+     * worker->moveToThread(workerThread)
+     * connect(workerThread, &QThread::started, worker, &Worker::doWork);
+     * connect(worker, &Worker::resultReady, this, &Controller::handleResults);
+     * connect(workerThread, &QThread::finished, worker, &QObject::deleteLater);
+     * thread->start();
+     */
+
     connect(this, &FileSortWidget::fileSortRequested, m_sorter, &FileSorter::sort);
-    m_sorter->moveToThread(m_thread);
+    connect(m_sorter, &FileSorter::sortFinished, this, &FileSortWidget::onSortFinished);
+    m_sorter->moveToThread(m_thread); // Переместили объект сортировщика в отдельный поток
     m_thread->start();
 }
 
@@ -72,15 +85,21 @@ void FileSortWidget::sort()
 
 void FileSortWidget::onSegmentCountChanged(int count)
 {
-    ui->progressBar->setMaximum(count);
+    ui->progressBar->setMaximum(count - 1);
     ui->progressBar->setValue(ui->progressBar->minimum());
 }
 
-void FileSortWidget::onSegmentMerged(int segmentLeft)
+void FileSortWidget::onSegmentMerged(int mergeCount)
 {
-    ui->progressBar->setValue(ui->progressBar->maximum() - segmentLeft + ui->progressBar->minimum());
+    if (mergeCount < 0)
+    {
+        ui->progressBar->setValue(ui->progressBar->maximum());
+    }
+    else
+    {
+        ui->progressBar->setValue(ui->progressBar->value() + mergeCount);
+    }
 }
-
 
 void FileSortWidget::onSortFinished(int returnCode)
 {
