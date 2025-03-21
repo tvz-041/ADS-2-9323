@@ -2,11 +2,12 @@
 
 #include <QObject>
 
-class ProgressSender : public QObject
+class FileSorter : public QObject
 {
     Q_OBJECT
 public:
-    explicit ProgressSender(QObject *parent = nullptr);
+    explicit FileSorter(QObject *parent = nullptr);
+
 
     /**
      * @brief Сообщает GUI начальное количество отрезков.
@@ -20,7 +21,11 @@ public:
      */
     void onSegmentMerged(int segmentLeft);
 
+public slots:
+    void sort(const QString &filename);
+
 signals:
     void segmentCountChanged(int count);
     void segmentMerged(int segmentLeft);
+    void sortFinished(int reason);
 };

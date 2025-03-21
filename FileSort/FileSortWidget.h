@@ -2,7 +2,7 @@
 
 #include <QWidget>
 
-#include "ProgressSender.h"
+#include "FileSorter.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -30,5 +30,5 @@ private slots:
 
 private:
     Ui::Widget *ui;
-    ProgressSender m_sender;
+    FileSorter m_sorter;
 };

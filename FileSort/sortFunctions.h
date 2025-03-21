@@ -2,6 +2,6 @@
 
 #include <string>
 
-class ProgressSender;
+class FileSorter;
 
-void sort(const std::string &filename, ProgressSender* sender);
+bool sort(const std::string &filename, FileSorter* sender);

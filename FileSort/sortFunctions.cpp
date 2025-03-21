@@ -1,11 +1,16 @@
 #include <thread>
 
-#include "ProgressSender.h"
+#include "FileSorter.h"
 
 #include "sortFunctions.h"
 
-void sort(const std::string &filename, ProgressSender* sender)
+bool sort(const std::string &filename, FileSorter* sender)
 {
+    if (filename.empty())
+    {
+        return false;
+    }
+
     const int MergeCount = 3;
     int segmentLeft = 300;
     sender->setSegmentCount(segmentLeft);
@@ -21,4 +26,6 @@ void sort(const std::string &filename, ProgressSender* sender)
             segmentLeft = segmentLeft - MergeCount + 1;
         sender->onSegmentMerged(segmentLeft);
     }
+
+    return true;
 }

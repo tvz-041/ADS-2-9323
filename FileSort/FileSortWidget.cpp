@@ -1,8 +1,6 @@
 #include <QDebug>
 #include <QFileDialog>
 
-#include "sortFunctions.h"
-
 #include "FileSortWidget.h"
 #include "ui_FileSortWidget.h"
 
@@ -15,8 +13,9 @@ FileSortWidget::FileSortWidget(QWidget *parent)
 
     connect(ui->pushButton_sort, &QPushButton::clicked, this, &FileSortWidget::sort);
 
-    connect(&m_sender, &ProgressSender::segmentCountChanged, this, &FileSortWidget::onSegmentCountChanged);
-    connect(&m_sender, &ProgressSender::segmentMerged, this, &FileSortWidget::onSegmentMerged);
+    connect(&m_sorter, &FileSorter::segmentCountChanged, this, &FileSortWidget::onSegmentCountChanged);
+    connect(&m_sorter, &FileSorter::segmentMerged, this, &FileSortWidget::onSegmentMerged);
+    connect(&m_sorter, &FileSorter::sortFinished, this, &FileSortWidget::onSortFinished);
 
     connect(ui->toolButton_unsortedFile, &QToolButton::clicked, this, &FileSortWidget::selectUnsortedFile);
     connect(ui->toolButton_sortedFile, &QToolButton::clicked, this, &FileSortWidget::setSortedFilePath);
@@ -58,7 +57,7 @@ void FileSortWidget::sort()
         unsortedFile.remove();
         sortedFile.copy(unsortedFile.fileName());
     }
-    ::sort(ui->lineEdit_sortedFile->text().toStdString(), &m_sender);
+    m_sorter->sort(ui->lineEdit_sortedFile->text());
 }
 
 void FileSortWidget::onSegmentCountChanged(int count)
@@ -71,5 +70,20 @@ void FileSortWidget::onSegmentMerged(int segmentLeft)
 {
     ui->progressBar->setValue(ui->progressBar->maximum() - segmentLeft + ui->progressBar->minimum());
     QApplication::processEvents();
-    setEnabled(ui->progressBar->value() == ui->progressBar->maximum());
+}
+
+
+void FileSortWidget::onSortFinished(int returnCode)
+{
+    if (returnCode != 1)
+    {
+        QMessageBox::warning(
+            this,
+            tr("Warning"),
+            tr("File is not sorted.\n"
+               "Please enshure that file path is valid.\n"
+               "If it is correct please contact with developer.")
+        );
+    }
+    setEnabled(true);
 }
