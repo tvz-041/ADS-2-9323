@@ -5,8 +5,8 @@
 #include "sortFunctions.h"
 
 // TODO: заменить содержимое вызовом вашей сортировки
-// Если нужно передавать доп. параметры, также поправить следующие методы:
-// FileSortWidget::sort()
+// Если нужно передавать доп. параметры, не забудьте добавить их в сигнатуры:
+// FileSortWidget::fileSortRequested(const QString &filename)
 // FileSorter::sort(const QString &filename)
 bool sort(const std::string &filename, FileSorter* sorter)
 {

@@ -73,13 +73,27 @@ void FileSortWidget::setSortedFilePath()
 void FileSortWidget::sort()
 {
     setEnabled(false);
-    QFile unsortedFile(ui->lineEdit_unsortedFile->text());
-    QFile sortedFile(ui->lineEdit_sortedFile->text());
-    if (unsortedFile.fileName() != sortedFile.fileName())
+
+    /**
+     * Блок ниже нужен для случая, когда ваша функция сортировки
+     * принимает только один путь к файлу (в этом случае ответ
+     * должен записываться в тот же файл, в котором лежали
+     * исходные данные, именно поэтому в вызов сигнала ниже
+     * передаётся путь из lineEdit_sortedFile)
+     *
+     * Если же у вашей функции реализована раздельная передача
+     * параметров путей, этот блок вам не нужен.
+     */
     {
-        unsortedFile.remove();
-        sortedFile.copy(unsortedFile.fileName());
+        QFile unsortedFile(ui->lineEdit_unsortedFile->text());
+        QFile sortedFile(ui->lineEdit_sortedFile->text());
+        if (unsortedFile.fileName() != sortedFile.fileName())
+        {
+            sortedFile.remove();
+            unsortedFile.copy(sortedFile.fileName());
+        }
     }
+
     emit fileSortRequested(ui->lineEdit_sortedFile->text());
 }
 
