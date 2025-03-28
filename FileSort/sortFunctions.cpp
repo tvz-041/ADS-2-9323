@@ -8,7 +8,7 @@
 // Если нужно передавать доп. параметры, также поправить следующие методы:
 // FileSortWidget::sort()
 // FileSorter::sort(const QString &filename)
-bool sort(const std::string &filename, FileSorter* sender)
+bool sort(const std::string &filename, FileSorter* sorter)
 {
     if (filename.empty())
     {
@@ -17,7 +17,7 @@ bool sort(const std::string &filename, FileSorter* sender)
 
     const int FileCount = 3;
     int segmentLeft = 300;
-    sender->setSegmentCount(segmentLeft);
+    sorter->setSegmentCount(segmentLeft);
 
     while (segmentLeft > 1)
     {
@@ -28,11 +28,11 @@ bool sort(const std::string &filename, FileSorter* sender)
         if (segmentLeft <= FileCount)
             mergeCount = segmentLeft - 1;
         segmentLeft -= mergeCount;
-        sender->onSegmentMerged(mergeCount);
+        sorter->onSegmentMerged(mergeCount);
     }
 
     // См. документацию метода "FileSorter::onSegmentMerged"
-    // sender->onSegmentMerged(-1);
+    // sorter->onSegmentMerged(-1);
 
     return true;
 }

@@ -4,4 +4,4 @@
 
 class FileSorter;
 
-bool sort(const std::string &filename, FileSorter* sender);
+bool sort(const std::string &filename, FileSorter* sorter);
