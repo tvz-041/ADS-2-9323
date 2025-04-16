@@ -38,34 +38,43 @@ void TreeWidget::paintTree(BinaryTree::Node *root, int leftBorderPos, int rightB
     }
     auto* item = new TreeNodeGraphicsItem(root->key);
 
-    int xPos = (leftBorderPos + rightBorderPos - item->boundingRect().width()) / 2;
+    int xCenter = (leftBorderPos + rightBorderPos) / 2;
+    int xPos = xCenter - item->boundingRect().width() / 2;
     item->setPos(xPos, yPos);
     m_scene->addItem(item);
 
     QPoint p1(
-        xPos + item->boundingRect().width(),
+        xPos + item->boundingRect().width() / 2,
         yPos + item->boundingRect().height()
     );
 
-    yPos += item->boundingRect().height() + 15;
+    yPos += item->boundingRect().height() + 30;
 
     if (root->left)
     {
-        auto child = TreeNodeGraphicsItem(root->left->key);
         QPoint p2(
-            (xPos - leftBorderPos) / 2,
+            (xCenter + leftBorderPos) / 2,
+            yPos
+        );
+        m_scene->addLine(QLineF(p1, p2));
+    }
+    if (root->right)
+    {
+        QPoint p2(
+            (xCenter + rightBorderPos) / 2,
             yPos
         );
         m_scene->addLine(QLineF(p1, p2));
     }
 
-    paintTree(root->left, leftBorderPos, xPos, yPos);
-    paintTree(root->right, xPos, rightBorderPos, yPos);
+
+    paintTree(root->left, leftBorderPos, xCenter, yPos);
+    paintTree(root->right, xCenter, rightBorderPos, yPos);
 }
 
-void TreeWidget::foo()
+void TreeWidget::repaintTree()
 {
-    ui->graphicsView->setSceneRect(0, 0, ui->graphicsView->width(), ui->graphicsView->height());
+    ui->graphicsView->setSceneRect(0, 0, ui->graphicsView->viewport()->width(), ui->graphicsView->viewport()->height());
     m_scene->clear();
     paintTree();
 }

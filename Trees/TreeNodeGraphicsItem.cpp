@@ -14,10 +14,9 @@ TreeNodeGraphicsItem::TreeNodeGraphicsItem(int key, QGraphicsItem *parent)
 
 void TreeNodeGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    this->QGraphicsTextItem::paint(painter, option, widget);
+    QGraphicsTextItem::paint(painter, option, widget);
     painter->setPen(Qt::magenta);
     painter->drawRect(QGraphicsTextItem::boundingRect());
-
     painter->setPen(Qt::black);
     painter->drawEllipse(0, 0, boundingRect().width(), boundingRect().height());
 }
