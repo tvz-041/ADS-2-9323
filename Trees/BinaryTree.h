@@ -16,7 +16,7 @@ public:
     Node *root();
     void add(int key);
 
-    static BinaryTree *buildRandom(int count);
+    static BinaryTree *buildRandom(int min = 0, int max = 100);
 
 protected:
     void add(int key, Node *&root);

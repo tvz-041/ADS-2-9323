@@ -15,9 +15,7 @@ TreeWidget::TreeWidget(QWidget *parent)
     ui->setupUi(this);
     m_scene = new QGraphicsScene(this);
     ui->graphicsView->setScene(m_scene);
-    m_tree = BinaryTree::buildRandom(25);
-
-    connect(ui->pushButton, &QPushButton::clicked, this, &TreeWidget::foo);
+    m_tree = BinaryTree::buildRandom(20, 35);
 }
 
 TreeWidget::~TreeWidget()
@@ -72,9 +70,21 @@ void TreeWidget::paintTree(BinaryTree::Node *root, int leftBorderPos, int rightB
     paintTree(root->right, xCenter, rightBorderPos, yPos);
 }
 
+void TreeWidget::show()
+{
+    QWidget::show();
+    repaintTree();
+}
+
 void TreeWidget::repaintTree()
 {
     ui->graphicsView->setSceneRect(0, 0, ui->graphicsView->viewport()->width(), ui->graphicsView->viewport()->height());
     m_scene->clear();
     paintTree();
+}
+
+void TreeWidget::resizeEvent(QResizeEvent *event)
+{
+    QWidget::resizeEvent(event);
+    repaintTree();
 }

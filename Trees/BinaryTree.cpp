@@ -35,13 +35,18 @@ void BinaryTree::add(int key, Node *&root)
     }
 }
 
-BinaryTree *BinaryTree::buildRandom(int count)
+BinaryTree *BinaryTree::buildRandom(int min, int max)
 {
-    BinaryTree *tree = new BinaryTree();
-    std::vector<int> keys(count);
-    for (int i = 0; i < count; ++i)
+    if (min > max)
     {
-        keys[i] = i;
+        std::swap(min , max);
+    }
+
+    BinaryTree *tree = new BinaryTree();
+    std::vector<int> keys(max - min + 1);
+    for (int i = min; i <= max; ++i)
+    {
+        keys[i - min] = i;
     }
 
     while (!keys.empty())

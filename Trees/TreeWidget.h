@@ -26,8 +26,13 @@ public:
     void paintTree(BinaryTree::Node *root, int leftBorderPos, int rightBorderPos,
                    int yPos) const;
 
+    void show();
+
 public slots:
-    void foo();
+    void repaintTree();
+
+protected:
+    void resizeEvent(QResizeEvent *event) override;
 
 private:
     Ui::TreeWidget *ui;
