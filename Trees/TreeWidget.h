@@ -2,6 +2,8 @@
 
 #include <QWidget>
 
+#include "BinaryTree.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class TreeWidget;
@@ -20,6 +22,10 @@ public:
     TreeWidget(QWidget *parent = nullptr);
     ~TreeWidget();
 
+    void paintTree();
+    void paintTree(BinaryTree::Node *root, int leftBorderPos, int rightBorderPos,
+                   int yPos) const;
+
 public slots:
     void foo();
 
@@ -28,4 +34,5 @@ private:
     QGraphicsScene *m_scene;
     QCheckBox *m_checkBox;
     QPushButton *m_button;
+    BinaryTree *m_tree = nullptr;
 };
