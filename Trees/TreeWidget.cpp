@@ -16,6 +16,9 @@ TreeWidget::TreeWidget(QWidget *parent)
     m_scene = new QGraphicsScene(this);
     ui->graphicsView->setScene(m_scene);
     m_tree = BinaryTree::buildRandom(20, 35);
+
+    connect(ui->pushButton_add, &QPushButton::clicked, this, &TreeWidget::addKeys);
+    // TODO: connect
 }
 
 TreeWidget::~TreeWidget()
@@ -81,6 +84,34 @@ void TreeWidget::repaintTree()
     ui->graphicsView->setSceneRect(0, 0, ui->graphicsView->viewport()->width(), ui->graphicsView->viewport()->height());
     m_scene->clear();
     paintTree();
+}
+
+void TreeWidget::addKeys()
+{
+    QString text = ui->lineEdit_keys->text();
+    QStringList keys = text.split(' ', Qt::SkipEmptyParts);
+    for (const QString &keyString : keys)
+    {
+        int key = keyString.toInt();
+        m_tree->add(key);
+    }
+    repaintTree();
+}
+
+void TreeWidget::removeKeys()
+{
+    // TODO: implement
+}
+
+void TreeWidget::randomizeKeys()
+{
+    // TODO: implement
+}
+
+void TreeWidget::clearTree()
+{
+    m_tree->clear();
+    repaintTree();
 }
 
 void TreeWidget::resizeEvent(QResizeEvent *event)

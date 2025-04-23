@@ -58,3 +58,22 @@ BinaryTree *BinaryTree::buildRandom(int min, int max)
 
     return tree;
 }
+
+void BinaryTree::clear()
+{
+    clear(m_root);
+}
+
+void BinaryTree::clear(Node *&root)
+{
+    if (!root)
+    {
+        return;
+    }
+
+    clear(root->left);
+    clear(root->right);
+
+    delete root;
+    root = nullptr;
+}
