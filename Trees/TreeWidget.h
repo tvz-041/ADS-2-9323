@@ -30,7 +30,6 @@ public:
 
 public slots:
     void addKeys();
-    void removeKeys();
     void randomizeKeys();
     void clearTree();
     void repaintTree();

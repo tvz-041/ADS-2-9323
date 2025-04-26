@@ -18,7 +18,7 @@ TreeWidget::TreeWidget(QWidget *parent)
     m_tree = BinaryTree::buildRandom(20, 35);
 
     connect(ui->pushButton_add, &QPushButton::clicked, this, &TreeWidget::addKeys);
-    // TODO: connect
+    // TODO: настроить остальные подключения
 }
 
 TreeWidget::~TreeWidget()
@@ -98,14 +98,9 @@ void TreeWidget::addKeys()
     repaintTree();
 }
 
-void TreeWidget::removeKeys()
-{
-    // TODO: implement
-}
-
 void TreeWidget::randomizeKeys()
 {
-    // TODO: implement
+    // TODO: реализовать
 }
 
 void TreeWidget::clearTree()
