@@ -18,6 +18,7 @@ TreeWidget::TreeWidget(QWidget *parent)
     m_tree = BinaryTree::buildRandom(20, 35);
 
     connect(ui->pushButton_add, &QPushButton::clicked, this, &TreeWidget::addKeys);
+    connect(ui->pushButton_find, &QPushButton::clicked, this, &TreeWidget::findKeys);
     // TODO: настроить остальные подключения
 }
 
@@ -38,6 +39,10 @@ void TreeWidget::paintTree(BinaryTree::Node *root, int leftBorderPos, int rightB
         return;
     }
     auto* item = new TreeNodeGraphicsItem(root->key);
+    if (m_searchedKeys.contains(root->key))
+    {
+        item->setBackgroundColor(Qt::green);
+    }
 
     int xCenter = (leftBorderPos + rightBorderPos) / 2;
     int xPos = xCenter - item->boundingRect().width() / 2;
@@ -94,6 +99,19 @@ void TreeWidget::addKeys()
     {
         int key = keyString.toInt();
         m_tree->add(key);
+    }
+    repaintTree();
+}
+
+void TreeWidget::findKeys()
+{
+    m_searchedKeys.clear();
+    QString text = ui->lineEdit_keys->text();
+    QStringList keys = text.split(' ', Qt::SkipEmptyParts);
+    for (const QString &keyString : keys)
+    {
+        int key = keyString.toInt();
+        m_searchedKeys.append(key);
     }
     repaintTree();
 }

@@ -30,6 +30,7 @@ public:
 
 public slots:
     void addKeys();
+    void findKeys();
     void randomizeKeys();
     void clearTree();
     void repaintTree();
@@ -43,4 +44,5 @@ private:
     QCheckBox *m_checkBox;
     QPushButton *m_button;
     BinaryTree *m_tree = nullptr;
+    QVector<int> m_searchedKeys;
 };
