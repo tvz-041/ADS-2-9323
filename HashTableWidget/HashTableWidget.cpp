@@ -6,6 +6,10 @@ HashTableWidget::HashTableWidget(QWidget *parent)
     , m_tableWidget(new QTableWidget(this))
 {
     ui->verticalLayout->insertWidget(0, m_tableWidget);
+    m_tableWidget->setColumnCount(2);
+    m_tableWidget->setHorizontalHeaderItem(0, new QTableWidgetItem("Key"));
+    m_tableWidget->setHorizontalHeaderItem(1, new QTableWidgetItem("Value"));
+    HashTableWidget::resizeTable();
 }
 
 
