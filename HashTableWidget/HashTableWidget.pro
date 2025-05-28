@@ -12,15 +12,18 @@ SOURCES += \
     BaseHashTableWidget.cpp \
     HashTableWidget.cpp \
     SceneHashTableWidget.cpp \
+    TableElementWidget.cpp \
     main.cpp
 
 HEADERS += \
     BaseHashTableWidget.h \
     HashTableWidget.h \
-    SceneHashTableWidget.h
+    SceneHashTableWidget.h \
+    TableElementWidget.h
 
 FORMS += \
-    BaseHashTableWidget.ui
+    BaseHashTableWidget.ui \
+    TableElementWidget.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
