@@ -33,7 +33,15 @@ void SceneHashTableWidget::addKeyValue()
             proxy->setX(x);
             proxy->setY(y);
 
-            m_rows[row].append(item);
+            int centerY = item->height() / 2;
+            auto* line = m_scene->addLine(-50, centerY, 0, centerY);
+            line->setParentItem(proxy);
+            line = m_scene->addLine(-centerY / 2, centerY / 2, 0, centerY);
+            line->setParentItem(proxy);
+            line = m_scene->addLine(-centerY / 2, centerY / 2 * 3, 0, centerY);
+            line->setParentItem(proxy);
+
+            m_rows[row].append({item, proxy});
         }
     }
 
