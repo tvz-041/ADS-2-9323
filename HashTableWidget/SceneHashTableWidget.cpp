@@ -21,7 +21,7 @@ void SceneHashTableWidget::addKeyValue()
     int column = 0;
     // TODO: заменить определение строки
     {
-        if (!m_rows[row][column]->isEmpty())
+        if (!m_rows[row][column].widget->isEmpty())
         {
             TableElementWidget *item = new TableElementWidget();
             //item->setTextAlignment(Qt::AlignCenter);
@@ -37,8 +37,8 @@ void SceneHashTableWidget::addKeyValue()
         }
     }
 
-    m_rows[row][column]->setKey(ui->spinBox_key->value());
-    m_rows[row][column]->setValue(ui->lineEdit_value->text());
+    m_rows[row][column].widget->setKey(ui->spinBox_key->value());
+    m_rows[row][column].widget->setValue(ui->lineEdit_value->text());
 
     //item->setFlags(item->flags() | Qt::ItemIsEditable);
 }
@@ -47,14 +47,24 @@ void SceneHashTableWidget::resizeTable()
 {
     // TODO: resize хеш-таблицы
     int oldSize = m_rows.size();
+    int newSize = ui->spinBox_size->value();
     // TODO: Удалить лишние элементы
-    m_rows.resize(ui->spinBox_size->value());
+    for (int i = newSize; i < oldSize; ++i)
+    {
+        for (ElementData& data : m_rows[i])
+        {
+            m_scene->removeItem(data.proxy);
+            data.widget->deleteLater();
+        }
+    }
+    m_rows.resize(newSize);
 
-    for (int i = 0; i < oldSize; ++i)
+    for (int i = 0; i < std::min(oldSize, newSize); ++i)
     {
         // TODO: заполнить новыми значениями из хеш-таблицы
+        // (добавить/удалить элементы коллизий при необходимости)
     }
-    for (int i = oldSize; i < m_rows.size(); ++i)
+    for (int i = oldSize; i < newSize; ++i)
     {
         //m_tableWidget->setVerticalHeaderItem(i, new QTableWidgetItem(QString::number(i)));
         TableElementWidget *item = new TableElementWidget();
@@ -65,6 +75,6 @@ void SceneHashTableWidget::resizeTable()
         int y = i * item->height();
         proxy->setY(y);
 
-        m_rows[i].append(item);
+        m_rows[i].append({item, proxy});
     }
 }

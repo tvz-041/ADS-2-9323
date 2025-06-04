@@ -17,8 +17,15 @@ protected slots:
     void resizeTable() override;
 
 private:
+    struct ElementData
+    {
+        TableElementWidget* widget = nullptr;
+        QGraphicsProxyWidget* proxy = nullptr;
+    };
+
+private:
     QGraphicsScene *m_scene = nullptr;
     QGraphicsView *m_view = nullptr;
 
-    QVector<QVector<TableElementWidget*>> m_rows;
+    QVector<QVector<ElementData>> m_rows;
 };
