@@ -15,6 +15,9 @@ protected slots:
     void addKeyValue() override;
     void resizeTable() override;
 
+private slots:
+    void onItemChanged(QTableWidgetItem *item);
+
 private:
     QTableWidget *m_tableWidget = nullptr;
 };

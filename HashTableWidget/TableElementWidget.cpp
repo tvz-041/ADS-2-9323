@@ -6,6 +6,8 @@ TableElementWidget::TableElementWidget(QWidget *parent) :
     ui(new Ui::TableElementWidget)
 {
     ui->setupUi(this);
+
+    connect(ui->lineEdit_value, &QLineEdit::textChanged, this, &TableElementWidget::onValueChanged);
 }
 
 TableElementWidget::~TableElementWidget()
@@ -36,4 +38,18 @@ void TableElementWidget::setValue(const QString &value)
 bool TableElementWidget::isEmpty() const
 {
     return ui->lineEdit_key->text().isEmpty();
+}
+
+void TableElementWidget::clear()
+{
+    ui->lineEdit_key->clear();
+    ui->lineEdit_value->clear();
+}
+
+void TableElementWidget::onValueChanged(const QString &value)
+{
+    if (!isEmpty())
+    {
+        emit valueChanged(key(), value);
+    }
 }

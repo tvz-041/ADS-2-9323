@@ -15,10 +15,8 @@ BaseHashTableWidget::~BaseHashTableWidget()
     delete ui;
 }
 
-void BaseHashTableWidget::addKeyValue()
+void BaseHashTableWidget::onValueChanged(int key, const QString &value)
 {
-}
-
-void BaseHashTableWidget::resizeTable()
-{
+//    value.toStdString()
+    // TODO: записать новое значение в хеш-таблицу
 }
